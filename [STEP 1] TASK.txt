@@ -1,0 +1,31 @@
+[STEP 1] TASK:
+Generate a Markdown file ‘GEMINI.md’ that I can copy and paste into Antigravity to Build a Dashboard with all the details below. 
+This file is an instruction to Antigravity Ai Agent to Build the Dashboard so give it proper Instructions.
+
+
+
+[STEP 2] DATA
+✅ What is the Name of the Business? 
+
+SP Pani Puri Shop
+✅ What is the Business About? 
+
+We Sell Pani Puri and Masala Puri in Our Shop
+✅ What Products/ Services do the Business Offer?
+
+We Sell Pani Puri and Masala Puri in Our Shop. Additionally we Sell Waffles and Brownies.
+
+✅ What Functionalities do you want the Dashboard to have?
+
+Customer Management, Finance Management, Inventory Management, Employees Management. 
+✅ What Brand Guidelines do you want the Dashboard to be based of?
+
+#3F4EFF Black background, Grifter Bold for Headlines and Satoshi Variables for Body text.
+
+✅ What Design Preferences do you want the Dashboard to be based on?
+
+Google Material Design,Glass Morphism, Modern. I want it to be a mix of this.
+
+✅ What Tech Stack to use to build the Dashboard?
+
+You come up with the best.

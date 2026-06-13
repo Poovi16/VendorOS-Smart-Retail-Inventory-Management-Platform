@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SP Pani Puri Shop - Management Dashboard</title>
+  <meta name="description" content="Premium management dashboard for SP Pani Puri Shop operations.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Floating Background Orbs for glassmorphism layout -->
+  <div class="background-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <i data-lucide="flame"></i>
+        </div>
+        <div class="brand-name">SP Pani Puri</div>
+      </div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item active" data-view="overview">
+          <a href="#"><i data-lucide="layout-dashboard" class="nav-icon"></i>Overview</a>
+        </li>
+        <li class="nav-item" data-view="customers">
+          <a href="#"><i data-lucide="users" class="nav-icon"></i>Customers</a>
+        </li>
+        <li class="nav-item" data-view="finance">
+          <a href="#"><i data-lucide="indian-rupee" class="nav-icon"></i>Finance</a>
+        </li>
+        <li class="nav-item" data-view="inventory">
+          <a href="#"><i data-lucide="package" class="nav-icon"></i>Inventory</a>
+        </li>
+        <li class="nav-item" data-view="employees">
+          <a href="#"><i data-lucide="user-cog" class="nav-icon"></i>Employees</a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <p>© 2026 SP Pani Puri Shop</p>
+        <p>V1.0.0 Glassmorphic</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="main-header">
+        <div class="header-title">
+          <button class="mobile-menu-btn" id="mobile-menu-toggle" style="display: none;">
+            <i data-lucide="menu"></i>
+          </button>
+          <h1 id="view-title">Overview</h1>
+          <p id="view-subtitle">Quick metrics and sales performance overview.</p>
+        </div>
+        <div class="header-meta">
+          <div class="date-time-badge">
+            <i data-lucide="calendar"></i>
+            <span id="current-date-time">June 13, 2026</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Alert Notification Banner (Low Stock / System Alerts) -->
+      <div class="alert-banner" id="low-stock-banner" style="display: none;">
+        <div class="alert-message">
+          <i data-lucide="alert-triangle"></i>
+          <span id="low-stock-message">Alert: Several inventory items are running low!</span>
+        </div>
+        <button class="btn btn-secondary btn-small" onclick="switchView('inventory')">View Inventory</button>
+      </div>
+
+      <!-- VIEW: OVERVIEW -->
+      <section id="view-overview" class="app-view active">
+        <!-- Stats Row -->
+        <div class="stats-grid">
+          <div class="glass-panel stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Gross Revenue</span>
+              <div class="stat-value" id="stat-gross-revenue">₹0.00</div>
+              <span class="stat-trend positive"><i data-lucide="trending-up"></i> +12% from last week</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i data-lucide="trending-up"></i>
+            </div>
+          </div>
+          <div class="glass-panel stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Net Profit</span>
+              <div class="stat-value" id="stat-net-profit">₹0.00</div>
+              <span class="stat-trend positive"><i data-lucide="trending-up"></i> +8.5% from last week</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i data-lucide="dollar-sign"></i>
+            </div>
+          </div>
+          <div class="glass-panel stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Operating Costs</span>
+              <div class="stat-value" id="stat-operating-costs">₹0.00</div>
+              <span class="stat-trend negative"><i data-lucide="trending-down"></i> +4.2% (Wages & stock)</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i data-lucide="shopping-bag"></i>
+            </div>
+          </div>
+          <div class="glass-panel stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Avg Order Value</span>
+              <div class="stat-value" id="stat-avg-order">₹0.00</div>
+              <span class="stat-trend positive"><i data-lucide="sparkles"></i> High customer loyalty</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i data-lucide="heart"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts and Activity Row -->
+        <div class="content-row">
+          <!-- Charts -->
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h2><i data-lucide="bar-chart-3"></i>Sales Trend Analytics</h2>
+            </div>
+            <div style="position: relative; height: 320px; width: 100%;">
+              <canvas id="overviewSalesChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Alert Panel -->
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h2><i data-lucide="zap"></i>Quick Actions</h2>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+              <button class="btn btn-primary" onclick="openModal('modal-add-transaction')">
+                <i data-lucide="plus-circle"></i>New Sale
+              </button>
+              <button class="btn btn-secondary" onclick="openModal('modal-add-customer')">
+                <i data-lucide="user-plus"></i>Add Customer
+              </button>
+              <button class="btn btn-secondary" onclick="openModal('modal-add-review')">
+                <i data-lucide="star"></i>Log Feedback
+              </button>
+            </div>
+            <div class="panel-header" style="margin-top: 20px; border-bottom: none; padding-bottom: 0;">
+              <h3>Recent Stock Warnings</h3>
+            </div>
+            <ul id="quick-stock-warnings" style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+              <!-- Dynamic Warnings -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Recent Ledger -->
+        <div class="full-row glass-panel">
+          <div class="panel-header">
+            <h2><i data-lucide="history"></i>Recent Transactions</h2>
+            <button class="btn btn-secondary btn-small" onclick="switchView('finance')">View All Ledger</button>
+          </div>
+          <div class="table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody id="overview-transactions-tbody">
+                <!-- Dynamically Rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: CUSTOMERS -->
+      <section id="view-customers" class="app-view">
+        <div class="search-filter-bar">
+          <div class="search-input-wrapper">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="customer-search" class="form-input" placeholder="Search customers by name, phone or email..." oninput="renderCustomersList()">
+          </div>
+          <div class="filter-actions">
+            <button class="btn btn-primary" onclick="openModal('modal-add-customer')">
+              <i data-lucide="user-plus"></i>Add Customer
+            </button>
+          </div>
+        </div>
+
+        <div class="customer-detail-grid">
+          <!-- Customers Directory -->
+          <div class="glass-panel" style="padding: 16px;">
+            <div class="panel-header">
+              <h2>Directory</h2>
+            </div>
+            <div style="max-height: 500px; overflow-y: auto;">
+              <table class="custom-table" style="font-size: 13px;">
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Loyalty Points</th>
+                  </tr>
+                </thead>
+                <tbody id="customers-list-tbody" style="cursor: pointer;">
+                  <!-- Dynamic render -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Customer Inspector Detail View -->
+          <div class="glass-panel" id="customer-inspector-panel">
+            <div class="panel-header">
+              <h2><i data-lucide="user-check"></i>Customer Details</h2>
+            </div>
+            <div id="inspector-placeholder" style="color: var(--text-muted); text-align: center; padding: 40px 0;">
+              <i data-lucide="info" style="width: 48px; height: 48px; margin-bottom: 12px; color: var(--text-muted);"></i>
+              <p>Select a customer from the directory to inspect detail profile, feedback, loyalty progress, and purchase history.</p>
+            </div>
+            <div id="inspector-content" style="display: none;">
+              <!-- Dynamic content details -->
+              <div class="customer-card-header">
+                <div class="customer-avatar" id="inspector-avatar">JD</div>
+                <div>
+                  <h3 id="inspector-name" style="font-size: 24px;">John Doe</h3>
+                  <p id="inspector-email">john@example.com</p>
+                </div>
+              </div>
+              <ul class="customer-info-list" style="margin-bottom: 24px;">
+                <li>
+                  <span>Phone Number</span>
+                  <span id="inspector-phone">9988776655</span>
+                </li>
+                <li>
+                  <span>Loyalty Tier</span>
+                  <span id="inspector-tier" class="tier-badge"><i data-lucide="award"></i> Gold</span>
+                </li>
+                <li>
+                  <span>Current Points</span>
+                  <strong id="inspector-points" style="color: var(--accent-color);">150 pts</strong>
+                </li>
+                <li>
+                  <span>Total Purchases Value</span>
+                  <span id="inspector-purchases-value">₹2,500</span>
+                </li>
+              </ul>
+
+              <div class="panel-header">
+                <h3>Log & View Customer Review</h3>
+                <button class="btn btn-secondary btn-small" id="btn-inspector-review">Log Rating</button>
+              </div>
+
+              <!-- Customer Feedback/Ratings loops -->
+              <div id="inspector-reviews-list" style="margin-bottom: 24px;">
+                <!-- Review List items -->
+              </div>
+
+              <div class="panel-header">
+                <h3>Order / Purchase History</h3>
+              </div>
+              <div class="table-container">
+                <table class="custom-table" style="font-size: 13px;">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Receipt ID</th>
+                      <th>Items</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="inspector-orders-tbody">
+                    <!-- Orders rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: FINANCE -->
+      <section id="view-finance" class="app-view">
+        <div class="stats-grid">
+          <div class="glass-panel" style="padding: 20px;">
+            <p class="stat-label">Operational Costs Breakdown</p>
+            <div style="height: 180px; position: relative;">
+              <canvas id="financeCostDistributionChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-panel" style="padding: 20px; grid-column: span 2;">
+            <p class="stat-label">Income vs. Expenses Trend</p>
+            <div style="height: 180px; position: relative;">
+              <canvas id="financeIncomeExpenseTrendChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-filter-bar">
+          <div class="search-input-wrapper">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="finance-search" class="form-input" placeholder="Search transactions (description, Category)..." oninput="renderFinanceLedger()">
+          </div>
+          <div class="filter-actions">
+            <select id="finance-filter-type" class="form-select" style="width: 150px;" onchange="renderFinanceLedger()">
+              <option value="all">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expenses</option>
+            </select>
+            <button class="btn btn-primary" onclick="openModal('modal-add-transaction')">
+              <i data-lucide="plus-circle"></i>Add Transaction
+            </button>
+          </div>
+        </div>
+
+        <div class="full-row glass-panel">
+          <div class="panel-header">
+            <h2><i data-lucide="file-text"></i>Transaction Ledger</h2>
+          </div>
+          <div class="table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Description</th>
+                  <th>Receipt</th>
+                </tr>
+              </thead>
+              <tbody id="finance-ledger-tbody">
+                <!-- Dinamic transactions logs -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: INVENTORY -->
+      <section id="view-inventory" class="app-view">
+        <div class="search-filter-bar">
+          <div class="search-input-wrapper">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="inventory-search" class="form-input" placeholder="Search catalog items..." oninput="renderInventoryCatalog()">
+          </div>
+          <div class="filter-actions">
+            <button class="btn btn-primary" onclick="openModal('modal-restock-inventory')">
+              <i data-lucide="refresh-cw"></i>Adjust Stock Level
+            </button>
+          </div>
+        </div>
+
+        <div class="panel-header">
+          <h2>Product & Ingredient Catalog</h2>
+        </div>
+
+        <!-- Inventory Grid -->
+        <div class="inventory-grid" id="inventory-catalog-grid" style="margin-bottom: 40px;">
+          <!-- Dynamically populated cards -->
+        </div>
+
+        <div class="content-row">
+          <!-- Supplier Directory -->
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h2><i data-lucide="truck"></i>Supplier Directory</h2>
+              <button class="btn btn-secondary btn-small" onclick="openModal('modal-add-supplier')">Add Supplier</button>
+            </div>
+            <div class="table-container">
+              <table class="custom-table" style="font-size: 13px;">
+                <thead>
+                  <tr>
+                    <th>Vendor</th>
+                    <th>Ingredients Supplied</th>
+                    <th>Contact</th>
+                  </tr>
+                </thead>
+                <tbody id="suppliers-tbody">
+                  <!-- Dynamic Suppliers -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent stock updates log -->
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h2><i data-lucide="archive"></i>Supplier Orders Log</h2>
+            </div>
+            <div class="table-container">
+              <table class="custom-table" style="font-size: 13px;">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Supplier</th>
+                    <th>Item Ordered</th>
+                    <th>Qty</th>
+                    <th>Cost</th>
+                  </tr>
+                </thead>
+                <tbody id="supplier-orders-tbody">
+                  <!-- Dynamic log -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: EMPLOYEES -->
+      <section id="view-employees" class="app-view">
+        <div class="content-row">
+          <!-- Employee Directory -->
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h2><i data-lucide="users"></i>Employee Directory</h2>
+              <button class="btn btn-primary btn-small" onclick="openModal('modal-add-employee')">Add Employee</button>
+            </div>
+            <div class="table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Hourly Wage</th>
+                    <th>Performance</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="employee-directory-tbody">
+                  <!-- Dynamic content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Wage & Payout Calculator -->
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h2><i data-lucide="calculator"></i>Wage Tracker & Payroll Calculator</h2>
+            </div>
+            <p style="margin-bottom: 20px; font-size: 14px;">Estimate payroll expenses based on shifts worked this week.</p>
+            <div class="table-container" style="margin-bottom: 20px;">
+              <table class="custom-table" style="font-size: 13px;">
+                <thead>
+                  <tr>
+                    <th>Staff Name</th>
+                    <th>Rate</th>
+                    <th>Hours</th>
+                    <th>Payout (Est)</th>
+                  </tr>
+                </thead>
+                <tbody id="employee-payroll-tbody">
+                  <!-- Dynamically computed payouts -->
+                </tbody>
+              </table>
+            </div>
+            <div style="border-top: 1px solid var(--glass-border); padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+              <strong>Total Payroll Cost:</strong>
+              <strong id="payroll-total-cost" style="font-size: 18px; color: var(--color-danger);">₹0.00</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Timetable Scheduling -->
+        <div class="full-row glass-panel">
+          <div class="panel-header">
+            <h2><i data-lucide="calendar"></i>Shift Scheduling (Weekly Calendar)</h2>
+            <button class="btn btn-primary btn-small" onclick="openModal('modal-manage-shift')">Schedule Shift</button>
+          </div>
+          <div class="shift-scheduler-container">
+            <div class="schedule-grid">
+              <div class="schedule-header-cell">Time Slot</div>
+              <div class="schedule-header-cell">Monday</div>
+              <div class="schedule-header-cell">Tuesday</div>
+              <div class="schedule-header-cell">Wednesday</div>
+              <div class="schedule-header-cell">Thursday</div>
+              <div class="schedule-header-cell">Friday</div>
+              <div class="schedule-header-cell">Saturday</div>
+              <div class="schedule-header-cell">Sunday</div>
+
+              <!-- Time Row: Morning (09:00 - 15:00) -->
+              <div class="schedule-time-label">Morning Shift</div>
+              <div class="schedule-cell" id="shift-cell-Mon-Morning"></div>
+              <div class="schedule-cell" id="shift-cell-Tue-Morning"></div>
+              <div class="schedule-cell" id="shift-cell-Wed-Morning"></div>
+              <div class="schedule-cell" id="shift-cell-Thu-Morning"></div>
+              <div class="schedule-cell" id="shift-cell-Fri-Morning"></div>
+              <div class="schedule-cell" id="shift-cell-Sat-Morning"></div>
+              <div class="schedule-cell" id="shift-cell-Sun-Morning"></div>
+
+              <!-- Time Row: Evening (15:00 - 21:00) -->
+              <div class="schedule-time-label">Evening Shift</div>
+              <div class="schedule-cell" id="shift-cell-Mon-Evening"></div>
+              <div class="schedule-cell" id="shift-cell-Tue-Evening"></div>
+              <div class="schedule-cell" id="shift-cell-Wed-Evening"></div>
+              <div class="schedule-cell" id="shift-cell-Thu-Evening"></div>
+              <div class="schedule-cell" id="shift-cell-Fri-Evening"></div>
+              <div class="schedule-cell" id="shift-cell-Sat-Evening"></div>
+              <div class="schedule-cell" id="shift-cell-Sun-Evening"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- FLOATING MODAL ROOT CONTAINER (Multiple modal bodies swapped in/out) -->
+
+  <!-- MODAL: ADD CUSTOMER -->
+  <div class="modal-overlay" id="modal-add-customer">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Add Customer</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-customer')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-add-customer" onsubmit="handleCustomerSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="cust-name">Customer Name</label>
+            <input type="text" id="cust-name" class="form-input" required placeholder="E.g. Rohan Sharma">
+          </div>
+          <div class="form-group">
+            <label for="cust-phone">Phone Number</label>
+            <input type="tel" id="cust-phone" class="form-input" required placeholder="E.g. 9876543210">
+          </div>
+          <div class="form-group">
+            <label for="cust-email">Email Address</label>
+            <input type="email" id="cust-email" class="form-input" placeholder="E.g. rohan@gmail.com">
+          </div>
+          <div class="form-group">
+            <label for="cust-status">Status</label>
+            <select id="cust-status" class="form-select">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-customer')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Customer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: LOG FEEDBACK -->
+  <div class="modal-overlay" id="modal-add-review">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Log Customer Review</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-review')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-add-review" onsubmit="handleReviewSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="review-customer-select">Select Customer</label>
+            <select id="review-customer-select" class="form-select" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="review-product">Product Item Reviewed</label>
+            <select id="review-product" class="form-select" required>
+              <option value="Pani Puri">Pani Puri</option>
+              <option value="Masala Puri">Masala Puri</option>
+              <option value="Waffles">Waffles</option>
+              <option value="Brownies">Brownies</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Customer Rating</label>
+            <div class="star-rating-input" id="star-rating-selector">
+              <span class="star" data-rating="1"><i data-lucide="star"></i></span>
+              <span class="star" data-rating="2"><i data-lucide="star"></i></span>
+              <span class="star" data-rating="3"><i data-lucide="star"></i></span>
+              <span class="star" data-rating="4"><i data-lucide="star"></i></span>
+              <span class="star" data-rating="5"><i data-lucide="star"></i></span>
+            </div>
+            <input type="hidden" id="review-rating-value" value="5" required>
+          </div>
+          <div class="form-group">
+            <label for="review-comment">Review / Comments</label>
+            <textarea id="review-comment" class="form-textarea" rows="3" placeholder="Write feedback comment here..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-review')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD TRANSACTION / SALE -->
+  <div class="modal-overlay" id="modal-add-transaction">
+    <div class="modal-container" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3>Record Transaction</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-transaction')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-add-transaction" onsubmit="handleTransactionSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="trans-type">Transaction Type</label>
+            <select id="trans-type" class="form-select" onchange="toggleTransactionFields()" required>
+              <option value="income">Income (Sales / Order)</option>
+              <option value="expense">Expense (Outflow)</option>
+            </select>
+          </div>
+
+          <!-- Section: Customer Sale (Shown for Income) -->
+          <div id="trans-income-group">
+            <div class="form-group">
+              <label for="trans-customer">Linked Customer (Optional)</label>
+              <select id="trans-customer" class="form-select" onchange="autofillCustomerSales(this.value)">
+                <option value="">Guest (Anonymous)</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Select Menu Items Purchased</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                <div>
+                  <input type="checkbox" id="item-pani-puri" class="menu-item-cb" value="Pani Puri" data-price="40" onchange="calculateSaleTotal()">
+                  <label for="item-pani-puri">Pani Puri (₹40)</label>
+                  <input type="number" id="qty-pani-puri" min="1" value="1" style="width: 50px; margin-left: 8px; font-size: 12px;" onchange="calculateSaleTotal()">
+                </div>
+                <div>
+                  <input type="checkbox" id="item-masala-puri" class="menu-item-cb" value="Masala Puri" data-price="50" onchange="calculateSaleTotal()">
+                  <label for="item-masala-puri">Masala Puri (₹50)</label>
+                  <input type="number" id="qty-masala-puri" min="1" value="1" style="width: 50px; margin-left: 8px; font-size: 12px;" onchange="calculateSaleTotal()">
+                </div>
+                <div>
+                  <input type="checkbox" id="item-waffles" class="menu-item-cb" value="Waffles" data-price="90" onchange="calculateSaleTotal()">
+                  <label for="item-waffles">Waffles (₹90)</label>
+                  <input type="number" id="qty-waffles" min="1" value="1" style="width: 50px; margin-left: 8px; font-size: 12px;" onchange="calculateSaleTotal()">
+                </div>
+                <div>
+                  <input type="checkbox" id="item-brownies" class="menu-item-cb" value="Brownies" data-price="120" onchange="calculateSaleTotal()">
+                  <label for="item-brownies">Brownies (₹120)</label>
+                  <input type="number" id="qty-brownies" min="1" value="1" style="width: 50px; margin-left: 8px; font-size: 12px;" onchange="calculateSaleTotal()">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Categories (Dynamically switches option based on income/expense) -->
+          <div class="form-group">
+            <label for="trans-category">Category</label>
+            <select id="trans-category" class="form-select" required>
+              <option value="Sales">Sales</option>
+              <option value="Rent">Rent</option>
+              <option value="Raw Materials">Raw Materials</option>
+              <option value="Wages">Wages</option>
+              <option value="Utilities">Utilities</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="trans-amount">Amount (₹)</label>
+              <input type="number" id="trans-amount" class="form-input" required min="1" placeholder="Amount">
+            </div>
+            <div class="form-group">
+              <label for="trans-date">Transaction Date</label>
+              <input type="date" id="trans-date" class="form-input" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="trans-desc">Description</label>
+            <input type="text" id="trans-desc" class="form-input" placeholder="E.g. Waffle batter materials, wages payout, etc.">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-transaction')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Ledger Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: RECEIPT GENERATOR -->
+  <div class="modal-overlay" id="modal-receipt">
+    <div class="modal-container" style="max-width: 450px;">
+      <div class="modal-header">
+        <h3>Invoice Receipt</h3>
+        <button class="modal-close" onclick="closeModal('modal-receipt')"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="receipt-wrapper" id="invoice-receipt-content">
+          <!-- Dynamic Receipt Content Generated in JS -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-receipt')">Close</button>
+        <button class="btn btn-primary" onclick="printReceipt()"><i data-lucide="printer"></i> Print / Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADJUST INVENTORY / STOCK LEVEL -->
+  <div class="modal-overlay" id="modal-restock-inventory">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Adjust Stock Inventory</h3>
+        <button class="modal-close" onclick="closeModal('modal-restock-inventory')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-restock" onsubmit="handleRestockSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="restock-item">Select Stock Item</label>
+            <select id="restock-item" class="form-select" required>
+              <!-- Populate dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="restock-action">Action</label>
+            <select id="restock-action" class="form-select" required>
+              <option value="add">Restock (Add Quantity)</option>
+              <option value="deduct">Deduct (Used Quantity)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="restock-qty">Adjust Quantity</label>
+              <input type="number" id="restock-qty" class="form-input" required min="1" placeholder="Quantity">
+            </div>
+            <div class="form-group">
+              <label for="restock-supplier">Linked Supplier Order (Optional)</label>
+              <select id="restock-supplier" class="form-select">
+                <option value="">None (Internal adjustment)</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="restock-cost">Supplies Order Cost (₹) (If Supplier Selected)</label>
+            <input type="number" id="restock-cost" class="form-input" min="0" value="0" placeholder="0">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-restock-inventory')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Apply Stock Adjustment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD SUPPLIER -->
+  <div class="modal-overlay" id="modal-add-supplier">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Add Supplier / Vendor</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-supplier')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-add-supplier" onsubmit="handleSupplierSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="sup-name">Supplier / Brand Name</label>
+            <input type="text" id="sup-name" class="form-input" required placeholder="E.g. Royal Flour Mills">
+          </div>
+          <div class="form-group">
+            <label for="sup-item">Ingredients Supplied</label>
+            <input type="text" id="sup-item" class="form-input" required placeholder="E.g. Waffle batter materials, Chocolate toppings">
+          </div>
+          <div class="form-group">
+            <label for="sup-contact">Phone / Contact Details</label>
+            <input type="text" id="sup-contact" class="form-input" required placeholder="E.g. +91 9999988888">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-supplier')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Vendor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD EMPLOYEE -->
+  <div class="modal-overlay" id="modal-add-employee">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Add Employee</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-employee')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-add-employee" onsubmit="handleEmployeeSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="emp-name">Employee Name</label>
+            <input type="text" id="emp-name" class="form-input" required placeholder="E.g. Amit Kumar">
+          </div>
+          <div class="form-group">
+            <label for="emp-role">Role</label>
+            <select id="emp-role" class="form-select" required>
+              <option value="Chef">Chef</option>
+              <option value="Server">Server</option>
+              <option value="Cashier">Cashier</option>
+              <option value="Manager">Manager</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="emp-wage">Hourly Wage (₹)</label>
+              <input type="number" id="emp-wage" class="form-input" required min="1" placeholder="E.g. 150">
+            </div>
+            <div class="form-group">
+              <label for="emp-phone">Contact Number</label>
+              <input type="text" id="emp-phone" class="form-input" required placeholder="E.g. 9888777666">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="emp-rating">Performance Rating (1-5)</label>
+            <select id="emp-rating" class="form-select">
+              <option value="5">⭐⭐⭐⭐⭐ Excellent (5/5)</option>
+              <option value="4">⭐⭐⭐⭐ Good (4/5)</option>
+              <option value="3">⭐⭐⭐ Average (3/5)</option>
+              <option value="2">⭐⭐ Fair (2/5)</option>
+              <option value="1">⭐ Poor (1/5)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-employee')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Employee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: SCHEDULE SHIFT -->
+  <div class="modal-overlay" id="modal-manage-shift">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Schedule Employee Shift</h3>
+        <button class="modal-close" onclick="closeModal('modal-manage-shift')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-manage-shift" onsubmit="handleShiftSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="shift-emp-select">Select Employee</label>
+            <select id="shift-emp-select" class="form-select" required>
+              <!-- Populate dynamically -->
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="shift-day">Day of Week</label>
+              <select id="shift-day" class="form-select" required>
+                <option value="Mon">Monday</option>
+                <option value="Tue">Tuesday</option>
+                <option value="Wed">Wednesday</option>
+                <option value="Thu">Thursday</option>
+                <option value="Fri">Friday</option>
+                <option value="Sat">Saturday</option>
+                <option value="Sun">Sunday</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="shift-time-slot">Shift Window</label>
+              <select id="shift-time-slot" class="form-select" required>
+                <option value="Morning">Morning (09:00 - 15:00, 6 hrs)</option>
+                <option value="Evening">Evening (15:00 - 21:00, 6 hrs)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-manage-shift')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Assign Shift</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Third-party CDNs loaded dynamically -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="app.js"></script>
+</body>
+</html>
