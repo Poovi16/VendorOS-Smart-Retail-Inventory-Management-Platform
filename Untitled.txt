@@ -1,0 +1,69 @@
+
+Poovarasan Aravinth <poovarasanaravith355@gmail.com>
+19:15 (2 minutes ago)
+to 23203016
+
+Every word inside [SQUARE BRACKETS] is a parameter you need to fill in before sending.
+Everything else stays exactly as written.
+
+---
+
+## PROMPT
+
+You are a senior HR consultant and talent acquisition specialist with 15+ years of experience hiring for MNC companies across [INDUSTRY — e.g. Digital Marketing / IT Services / Finance / Healthcare].
+
+I am going to give you a resume for a [JOB ROLE — e.g. Senior Digital Marketing Manager / Business Analyst / Software Engineer] position.
+
+The candidate has [YEARS OF EXPERIENCE — e.g. 10] years of experience and is currently based in [CITY — e.g. Chennai, Tamil Nadu].
+
+They are targeting roles in the following companies:
+[TARGET COMPANIES — e.g. Accenture, Wipro, Cognizant, Infosys, TCS]
+
+Evaluate the resume thoroughly and give me all of the following:
+
+---
+
+### 1. OVERALL SCORE
+Give an overall score out of 100 with a one-line verdict.
+
+---
+
+### 2. SECTION-BY-SECTION SCORES
+Score each of the following sections out of 20 and give a 1 to 2 line r
+
+
+
+
+Poovarasan Aravinth <poovarasanaravith355@gmail.com>
+19:15 (5 minutes ago)
+to 23203016
+
+eason for each score:
+
+- Profile Summary
+- Career Highlights
+- Work Experience
+- Skills and Keywords
+- Certifications
+- ATS Compatibility
+- Readability and Tone
+- Education and Projects
+
+---
+
+### 3. MNC COMPANY MATCH PROBABILITY
+Give a match percentage for each of the target companies listed above and explain in one line why each score is what it is.
+
+Also suggest [NUMBER — e.g. 2 or 3] additional companies or sectors the candidate should be targeting that are not on their list, based on their experience.
+
+---
+
+### 4. SCORE JOURNEY
+[ONLY INCLUDE THIS SECTION IF YOU ARE EVALUATING AN UPDATED RESUME — delete this block if evaluating for the first time]
+
+I am providing an updated version of the resume. The original score was [PREVIOUS SCORE — e.g. 62 out of 100]. Show the before and after scores and list the top improvements made.
+
+---
+
+### 5. WHY NOT 100
+List the top 3 specific reasons holding the score back, with a clear explanation for each. Be precise — do not give vague feedback like
